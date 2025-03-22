@@ -1,0 +1,7 @@
+fastapi>=0.100.0
+uvicorn>=0.23.0
+sqlalchemy>=2.0.20
+reportlab>=3.6.12
+pillow>=9.0.0
+python-multipart>=0.0.5
+pyinstaller>=6.0.0 

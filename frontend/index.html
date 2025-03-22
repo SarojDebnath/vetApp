@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Veterinary Clinic Management</title>
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Loading indicator style -->
+    <style>
+        #loadingOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #loadingMessage {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        #connectionStatus {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading overlay -->
+    <div id="loadingOverlay">
+        <div class="spinner"></div>
+        <div id="loadingMessage">Loading Veterinary Clinic Application...</div>
+        <div id="connectionStatus">Connecting to server...</div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <i class="fas fa-paw"></i>
+            <h1>Veterinary Clinic Management</h1>
+        </div>
+        <div class="actions">
+            <button id="btnSettings" class="icon-button" title="Settings">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button id="btnReset" class="icon-button" title="Reset Form">
+                <i class="fas fa-sync-alt"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section id="owner-pet-section" class="card">
+            <h2>Owner & Pet Information</h2>
+            <div class="form-grid">
+                <div class="form-column">
+                    <h3>Owner Details</h3>
+                    <div class="form-group">
+                        <label for="ownerName">Owner Name*</label>
+                        <div class="autocomplete">
+                            <input type="text" id="ownerName" placeholder="Enter owner name" required>
+                            <div id="ownerSuggestions" class="suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerAddress">Address</label>
+                        <input type="text" id="ownerAddress" placeholder="Enter address">
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerPhone">Phone</label>
+                        <input type="text" id="ownerPhone" placeholder="Enter phone number">
+                    </div>
+                </div>
+                <div class="form-column">
+                    <h3>Pet Details</h3>
+                    <div class="form-group">
+                        <label for="petName">Pet Name*</label>
+                        <div class="autocomplete">
+                            <input type="text" id="petName" placeholder="Enter pet name" required>
+                            <div id="petSuggestions" class="suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="petSpecies">Species</label>
+                        <div class="autocomplete">
+                            <input type="text" id="petSpecies" placeholder="Enter species">
+                            <div id="speciesSuggestions" class="suggestions"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="petBreed">Breed</label>
+                            <input type="text" id="petBreed" placeholder="Enter breed">
+                        </div>
+                        <div class="form-group">
+                            <label for="petAge">Age</label>
+                            <input type="text" id="petAge" placeholder="Age">
+                        </div>
+                        <div class="form-group">
+                            <label for="petSex">Sex</label>
+                            <select id="petSex">
+                                <option value="">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="treatment-section" class="card">
+            <h2>Examination & Treatment</h2>
+            <div class="form-grid">
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="complaint">Complaint</label>
+                        <textarea id="complaint" rows="4" placeholder="Enter complaint"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="examination">Examination</label>
+                        <textarea id="examination" rows="4" placeholder="Enter examination details"></textarea>
+                    </div>
+                </div>
+                <div class="form-column">
+                    <div class="form-group">
+                        <label for="treatment">Treatment</label>
+                        <div class="treatment-container">
+                            <textarea id="treatment" rows="4" placeholder="Enter treatment details"></textarea>
+                            <button id="btnMedications" class="icon-button" title="Add Medication">
+                                <i class="fas fa-pills"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tests">Tests</label>
+                        <textarea id="tests" rows="4" placeholder="Enter test details"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="next-visit-section" class="card">
+            <h2>Next Visit</h2>
+            <div class="form-group">
+                <label for="nextVisit">Next Visit Date</label>
+                <input type="date" id="nextVisit">
+            </div>
+        </section>
+
+        <section id="history-section" class="card">
+            <h2>Pet History</h2>
+            <div id="historyList" class="history-list">
+                <p class="no-history">No history available for this pet.</p>
+            </div>
+        </section>
+
+        <section id="actions-section" class="card">
+            <div class="action-buttons">
+                <button id="btnSave" class="primary-button">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <button id="btnSavePrint" class="primary-button">
+                    <i class="fas fa-print"></i> Save & Print
+                </button>
+                <button id="btnReset2" class="secondary-button">
+                    <i class="fas fa-sync-alt"></i> Reset
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Medications Dialog -->
+    <div id="medicationsDialog" class="dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3>Common Medications</h3>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="search-container">
+                    <input type="text" id="medicationSearch" placeholder="Search medications...">
+                </div>
+                <div id="medicationsList" class="medications-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Dialog -->
+    <div id="settingsDialog" class="dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3>Settings</h3>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="form-group">
+                    <label for="saveFolder">Save Folder</label>
+                    <div class="folder-input">
+                        <input type="text" id="saveFolder" readonly>
+                        <button id="btnBrowse" class="secondary-button">Browse</button>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button id="btnSaveSettings" class="primary-button">Save Settings</button>
+                    <button id="btnTestPdf" class="secondary-button">Test PDF Generation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmDialog" class="dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h3>Confirm Action</h3>
+                <button class="close-button">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <p id="confirmMessage">Are you sure you want to perform this action?</p>
+                <div class="form-actions">
+                    <button id="btnConfirmYes" class="primary-button">Yes</button>
+                    <button id="btnConfirmNo" class="secondary-button">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="static/js/api.js"></script>
+    <script src="static/js/app.js"></script>
+    <script>
+        // Hide loading overlay when page is fully loaded
+        window.addEventListener('load', function() {
+            // Don't hide immediately - let the app.js init handle this
+            document.getElementById('connectionStatus').textContent = 'Page loaded, initializing application...';
+        });
+    </script>
+</body>
+</html> 
